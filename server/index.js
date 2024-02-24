@@ -1,11 +1,12 @@
 const express = require("express");
 const sellerAuthRoute = require("./routes/seller/sellerAuthRoute");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const dbConnection = require("./config/dbConnection");
 dotenv.config();
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 dbConnection();
 
 app.use("/", sellerAuthRoute);
