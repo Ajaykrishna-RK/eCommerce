@@ -10,8 +10,16 @@ function Auth() {
     password: "",
   });
 
+  const [loginCred, setLoginCred] = useState({
+    email: "",
+    password: "",
+  });
+
   const handleChange = (e) => {
     setSignUpCred((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const handleLoginChange = (e) => {
+    setLoginCred((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSignUp = async (e) => {
@@ -23,6 +31,20 @@ function Auth() {
         data: signupCred,
       };
 
+      const response = await axios(config);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      let config = {
+        url: `${BASEURL}/auth/login`,
+        method: "post",
+        data: loginCred,
+      };
       const response = await axios(config);
       console.log(response);
     } catch (err) {
@@ -78,11 +100,13 @@ function Auth() {
       ) : (
         <div className="w-[85%] sm:w-[60%] mx-auto">
           <p className="text-center text-[20px] font-[700] py-4"> Login </p>
-          <form>
+          <form onSubmit={handleLogin}>
             <input
               className="mt-4 bg-gray-100 border-[1px] border-opacity-10 rounded-[10px] border-[#111] w-full py-2 px-3  focus:outline-none "
               type="email"
-              name=""
+              name="email"
+              value={loginCred.email}
+              onChange={(e) => handleLoginChange(e)}
               placeholder="email"
             />
 
@@ -90,6 +114,9 @@ function Auth() {
               className="mt-4 bg-gray-100 border-[1px] border-opacity-10 rounded-[10px] border-[#111] w-full py-2 px-3  focus:outline-none "
               id="username"
               type="password"
+              name="password"
+              value={loginCred.password}
+              onChange={(e) => handleLoginChange(e)}
               placeholder="password"
             />
 
