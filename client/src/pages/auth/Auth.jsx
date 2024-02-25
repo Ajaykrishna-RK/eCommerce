@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { BASEURL } from "../../constants/Constants";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserDetails } from "../../redux/ApiSlice";
+import { Login } from "../../redux/ApiSlice";
+import { useNavigate } from "react-router-dom";
 
 function Auth() {
   const [authState, setAuthState] = useState(false);
-  const { userData } = useSelector((state) => state.api);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [signupCred, setSignUpCred] = useState({
     name: "",
     email: "",
@@ -27,6 +29,7 @@ function Auth() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       let config = {
         url: `${BASEURL}/auth/signup`,
@@ -35,13 +38,22 @@ function Auth() {
       };
 
       const response = await axios(config);
+      if (response.status === 200) {
+        setSignUpCred({ name: "", email: "", password: "" });
+        setAuthState(false);
+      }
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      alert(err?.response?.data?.msg);
+      setSignUpCred({ name: "", email: "", password: "" });
+      setLoading(false);
     }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       let config = {
         url: `${BASEURL}/auth/login`,
@@ -49,13 +61,19 @@ function Auth() {
         data: loginCred,
       };
       const response = await axios(config);
-      dispatch(addUserDetails(response?.data));
+      if (response?.status === 200) {
+        dispatch(Login(response?.data));
+        navigate("/");
+        setLoginCred({ email: "", password: "" });
+      }
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      alert(err?.response?.data?.msg);
+      setLoginCred({ email: "", password: "" });
+      setLoading(false);
     }
   };
-
-  console.log(userData,"data")
 
   return (
     <div className="max-w-[900px] mx-auto">
@@ -91,7 +109,7 @@ function Auth() {
 
             <button className="bg-[#5555d2] rounded-[10px] font-[700] text-[#fff] w-full mt-4 py-2 ">
               {" "}
-              Sign Up{" "}
+              {loading ? "loading... " : "Signup"}
             </button>
           </form>
           <p
@@ -127,7 +145,7 @@ function Auth() {
 
             <button className="bg-[#5555d2] rounded-[10px] font-[700] text-[#fff] w-full mt-4 py-2 ">
               {" "}
-              Sign Up{" "}
+              {loading ? "loading..." : " Login"}{" "}
             </button>
           </form>
           <p
