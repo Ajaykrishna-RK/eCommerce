@@ -28,7 +28,7 @@ const sellerLogin = async (req, res) => {
       return res.status(404).json({ msg: "Invalid Credantials" });
     const token = jwt.sign({ id: findUser._id }, process.env.JWT_SECRET);
     const { password: pass, ...rest } = findUser?._doc;
-    res.status(200).json({ token: token, seller: rest });
+    res.status(200).json({ seller: rest, token });
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);

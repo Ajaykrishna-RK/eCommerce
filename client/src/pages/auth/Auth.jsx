@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { BASEURL } from "../../constants/Constants";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addUserDetails } from "../../redux/ApiSlice";
 
 function Auth() {
   const [authState, setAuthState] = useState(false);
+  const { userData } = useSelector((state) => state.api);
+  const dispatch = useDispatch();
   const [signupCred, setSignUpCred] = useState({
     name: "",
     email: "",
     password: "",
   });
-
   const [loginCred, setLoginCred] = useState({
     email: "",
     password: "",
@@ -46,11 +49,13 @@ function Auth() {
         data: loginCred,
       };
       const response = await axios(config);
-      console.log(response);
+      dispatch(addUserDetails(response?.data));
     } catch (err) {
       console.log(err);
     }
   };
+
+  console.log(userData,"data")
 
   return (
     <div className="max-w-[900px] mx-auto">
