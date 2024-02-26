@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { BASEURL } from "../../constants/Constants";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { Login } from "../../redux/ApiSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { Login } from "../../redux/ApiSlice";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../userContext/UserContext";
 
 function Auth() {
   const [authState, setAuthState] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const { sellerToken, setSellerToken } = useContext(UserContext);
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const [signupCred, setSignUpCred] = useState({
     name: "",
@@ -62,7 +64,11 @@ function Auth() {
       };
       const response = await axios(config);
       if (response?.status === 200) {
-        dispatch(Login(response?.data));
+        console.log(response?.data);
+        setSellerToken(
+          localStorage.setItem("sellerToken", response?.data?.token)
+        );
+       
         navigate("/");
         setLoginCred({ email: "", password: "" });
       }

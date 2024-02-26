@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const storedToken = localStorage.getItem("token");
+
 const initialState = {
-  token: localStorage.getItem("token")
-    ? JSON.parse(localStorage.getItem("token"))
-    : null,
+  token: storedToken || null,
 };
 
 const apiSlice = createSlice({
@@ -11,18 +11,25 @@ const apiSlice = createSlice({
   initialState: initialState,
   reducers: {
     Login(state, action) {
-      state.token = localStorage.setItem(
-        "token",
-        JSON.stringify(action.payload.token)
-      );
+      const token = action?.payload?.token;
+      if (token) {
+        // Update state immutably by returning a new state object
+        return {
+          ...state,
+          token: token,
+        };
+      }
+      return state; // Return current state if no token provided
     },
     LogOut(state) {
       localStorage.removeItem("token");
-
-      state.token = null;
+      return {
+        ...state,
+        token: null,
+      };
     },
   },
 });
 
-export const { Login, LogOut } = apiSlice?.actions;
+export const { Login, LogOut } = apiSlice.actions;
 export default apiSlice.reducer;

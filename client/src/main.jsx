@@ -5,13 +5,16 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import "./index.css";
 import { store } from "./redux/Store.jsx";
+import { UserContextProvider } from "./userContext/UserContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <UserContextProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </UserContextProvider>
     </BrowserRouter>
-  // </React.StrictMode>
+  </React.StrictMode>
 );
