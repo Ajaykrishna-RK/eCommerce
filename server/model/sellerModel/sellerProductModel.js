@@ -16,10 +16,10 @@ const sellerProductSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-//   image: {
-//     required: true,
-//     type: String,
-//   },
+  image: {
+    required: true,
+    type: String,
+  },
 });
 
 const sellerProduct = mongoose.model("sellerProduct", sellerProductSchema);

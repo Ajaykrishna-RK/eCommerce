@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import {BASEURL} from "../../constants/Constants"
 
 function AddProduct() {
   const [productDetails, setProductDetails] = useState({
@@ -8,6 +10,20 @@ function AddProduct() {
     category: "",
     image: null,
   });
+
+  const handleAddProduct = async () => {
+    try {
+      let config = {
+        method: "post",
+        url: `${BASEURL}/seller/addProduct`,
+        data: productDetails,
+      };
+      const response = await axios(config);
+      console.log(response, "res");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
@@ -22,7 +38,8 @@ function AddProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(productDetails);
+
+    handleAddProduct();
   };
 
   return (
