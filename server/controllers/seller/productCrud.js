@@ -3,7 +3,7 @@ const addProduct = async (req, res) => {
     const { productName, description, price, category } = req.body;
     const imagePath = req.file.path;
 
-    res.json({image:imagePath, "image"});
+    res.json({ image: imagePath });
   } catch (err) {}
 };
 
