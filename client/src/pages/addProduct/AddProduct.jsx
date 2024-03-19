@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {BASEURL} from "../../constants/Constants"
+import { BASEURL } from "../../constants/Constants";
 
 function AddProduct() {
   const [productDetails, setProductDetails] = useState({
@@ -26,18 +26,21 @@ function AddProduct() {
   };
 
   const handleChange = (e) => {
-    if (e.target.name === "image") {
-      setProductDetails({ ...productDetails, image: e.target.files[0] });
+    const { name, value } = e.target;
+
+    if (name === "image") {
+      setProductDetails({ ...productDetails, image: e.target.files[0]?.type });
     } else {
       setProductDetails((prev) => ({
         ...prev,
-        [e.target.name]: e.target.value,
+        [name]: value,
       }));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // console.log(productDetails,"")
 
     handleAddProduct();
   };
