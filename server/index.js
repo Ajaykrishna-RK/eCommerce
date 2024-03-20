@@ -18,6 +18,7 @@ app.use(cors());
 dbConnection();
 
 app.use("/", sellerAuthRoute);
+app.use("/", productCrudRoute);
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const dir = "uploads/";
