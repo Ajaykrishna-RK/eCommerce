@@ -1,7 +1,7 @@
 const addProduct = async (req, res) => {
   try {
     const { productName, description, price, category } = req.body;
-    // const imagePath = req.file.path;
+    const imagePath = req.file.path;
 
     // Process the product details and send back a response
     const product = {
@@ -9,7 +9,7 @@ const addProduct = async (req, res) => {
       description,
       price,
       category,
-      // image: imagePath,
+      image: imagePath,
     };
 
     res.status(200).json({ message: "Product added successfully", product });

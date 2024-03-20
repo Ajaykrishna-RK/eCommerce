@@ -8,7 +8,7 @@ function AddProduct() {
     description: "",
     price: "",
     category: "",
-    image: null,
+    // image: null,
   });
 
   const handleAddProduct = async () => {
@@ -28,14 +28,10 @@ function AddProduct() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "image") {
-      setProductDetails({ ...productDetails, image: e.target.files[0]?.type });
-    } else {
-      setProductDetails((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    setProductDetails((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
