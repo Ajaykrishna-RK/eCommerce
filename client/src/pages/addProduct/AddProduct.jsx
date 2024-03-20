@@ -8,17 +8,27 @@ function AddProduct() {
     description: "",
     price: "",
     category: "",
-    // image: null,
+    image: null,
   });
 
   const handleAddProduct = async () => {
     try {
-      let config = {
-        method: "post",
-        url: `${BASEURL}/seller/addProduct`,
-        data: productDetails,
-      };
-      const response = await axios(config);
+      const formData = new FormData();
+      formData.append("productName", productDetails.productName);
+      formData.append("description", productDetails.description);
+      formData.append("price", productDetails.price);
+      formData.append("category", productDetails.category);
+      formData.append("image", productDetails.image);
+
+      const response = await axios.post(
+        `${BASEURL}/seller/addProduct`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log(response, "res");
     } catch (err) {
       console.log(err);
@@ -26,17 +36,19 @@ function AddProduct() {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, files } = e.target;
+
+    // If input type is file, set the value to the files
+    const newValue = type === "file" ? files[0] : value;
 
     setProductDetails((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(productDetails,"")
 
     handleAddProduct();
   };
